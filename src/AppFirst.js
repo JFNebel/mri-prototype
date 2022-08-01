@@ -8,7 +8,6 @@ function App() {
 
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
-    console.log(acceptedFiles)
     setFiles(
       acceptedFiles.map(file => Object.assign(file,{
         preview:URL.createObjectURL(file)
@@ -35,15 +34,15 @@ function App() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: '20px',
+          borderRadius: '10px',
           padding: '20px'
         }}
       >
         <input {...getInputProps()} />
         {
           isDragActive ?
-            <p style={{textAlign: 'center', color: '#918E9B', fontWeight: 'bold', fontSize: '20px'}}>Suelta el archivo aquí</p> :
-            <p style={{textAlign: 'center', color: '#918E9B', fontWeight: 'bold', fontSize: '20px'}}>
+            <p>Suelta el archivo aquí</p> :
+            <p style={{textAlign: 'center'}}>
             Coloca la imagen que deseas subir en este recuadro 
             <br/><br/>o<br/><br/> 
             Haz click aquí para buscarlo entre tus archivos.
@@ -52,7 +51,7 @@ function App() {
       </div>
 
       <div className="img-preview">
-        {/* <div style={{textAlign: 'center', marginTop: '30px', marginBottom: '30px', color: '#D9D9D9'}}>Aquí está el preview:</div> */}
+        <div style={{textAlign: 'center', marginTop: '30px', marginBottom: '30px'}}>Aquí está el preview:</div>
         <div>{images}</div>
       </div>
 
