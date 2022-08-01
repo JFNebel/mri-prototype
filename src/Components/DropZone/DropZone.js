@@ -1,12 +1,14 @@
+import './DropZone.css';
 import React, { useCallback, useState } from 'react'
 import {useDropzone} from 'react-dropzone';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 function DropZone() {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
-    console.log("recibido el archivo")
     setFiles(
       acceptedFiles.map(file => Object.assign(file,{
         preview:URL.createObjectURL(file)
@@ -14,43 +16,55 @@ function DropZone() {
     )
   }, [])
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    onDrop,
+    multiple: false
+  })
 
   const images = files.map(file => (
     <img 
       key={file.name} 
       src={file.preview} 
       alt="image" 
-      style={{ width:'200px', height:'200px' }} 
+      // style={{ width:'150px', height:'150px' }} 
     />
   ))
 
   return (
     <>
-      <div 
-        className="drop-zone" 
-        style={{ 
-          backgroundColor:'red', 
-          width: '60%', 
-          height: '60%',
-          borderRadius: '10px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
+      <div {...getRootProps()} 
+        className="dropzone-outer"
       >
-        <div {...getRootProps()}>
-          <input {...getInputProps()} />
+        <input {...getInputProps()} />
+        <div className="dropzone">
           {
             isDragActive ?
               <p>Suelta el archivo aquí</p> :
-              <p>Coloca el archivo que deseas subir en este recuadro o haz click para buscarlo entre tus archivos</p>
+              <p>
+              Coloca la imagen que deseas subir en este recuadro 
+              <br/><br/>o<br/><br/> 
+              Haz click aquí para buscarlo entre tus archivos.
+              </p>
           }
+
         </div>
+
       </div>
-      <div className="cosa">Aqui estan los previes</div>
-      <div>{images}</div>
+
+      <div className="img-preview-card">
+        <div>
+          <p style={{textAlign: 'center', margin: '0'}}>Preview</p>
+          <div className="img-preview">{images}</div>
+        </div>
+        <button className="segment-button">
+          Segment!
+        </button>
+        {/* <Button variant="outlined">Outlined</Button> */}
+      </div>
+
+
     </>
+
   )
 
 }
