@@ -1,11 +1,11 @@
 import './DropZone.css';
 import React, { useCallback, useState } from 'react'
 import {useDropzone} from 'react-dropzone';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-function DropZone() {
+function DropZone(props) {
   const [files, setFiles] = useState([]);
+  console.log(props)
 
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
@@ -26,9 +26,12 @@ function DropZone() {
       key={file.name} 
       src={file.preview} 
       alt="image" 
-      // style={{ width:'150px', height:'150px' }} 
+      style={{ maxWidth:'200px', maxHeight:'200px', margin: '3px' }} 
     />
   ))
+
+
+
 
   return (
     <>
@@ -51,16 +54,19 @@ function DropZone() {
 
       </div>
 
-      <div className="img-preview-card">
-        <div>
-          <p style={{textAlign: 'center', margin: '0'}}>Preview</p>
-          <div className="img-preview">{images}</div>
-        </div>
-        <button className="segment-button">
-          Segment!
-        </button>
-        {/* <Button variant="outlined">Outlined</Button> */}
-      </div>
+      {
+        files.length > 0 ? 
+          <div className="img-preview-card">
+            <div>
+              <p style={{textAlign: 'center', margin: '0'}}>Preview</p>
+              <div className="img-preview">{images}</div>
+            </div>
+            <div className="segment-button">
+              <Button variant="outlined" onClick={props.setView}>Segment!</Button>
+            </div>
+          </div> :
+          <></>
+      }
 
 
     </>
