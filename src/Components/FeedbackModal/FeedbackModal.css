@@ -1,0 +1,44 @@
+.modal-box {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+  width: 40%;
+  height: 50%;
+  background-color: #323242; 
+  border-radius: 20px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form-header {
+  color: #D9D9D9;
+  font-weight: bold;
+  font-size: 26px;
+  margin-bottom: 30px;
+  background-color: #1A1B21;
+  width: 100%;
+  text-align: center;
+  height: 20%;
+  padding-top: 18px;
+  margin-top: 0;
+}
+
+
+.form-content {
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: column;
+  width: 92%;
+  height: 80%;
+}
+
+.correo-input {
+  /* background-color: #2A2B31; */
+  border-radius: 4px;
+  width: 50%;
+  margin-bottom: 30px!important;
+}

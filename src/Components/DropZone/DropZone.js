@@ -5,10 +5,10 @@ import Button from '@mui/material/Button';
 
 function DropZone(props) {
   const [files, setFiles] = useState([]);
-  console.log(props)
 
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
+    console.log(acceptedFiles)
     setFiles(
       acceptedFiles.map(file => Object.assign(file,{
         preview:URL.createObjectURL(file)

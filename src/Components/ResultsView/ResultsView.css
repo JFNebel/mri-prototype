@@ -2,8 +2,14 @@
 .results-card {
   /* background-color: #D9D9D9; */
   /* background-color: #323242; */ 
-  width: 45%;
-  height: 60%;
+
+  /* Version chiqui */
+  /* width: 45%; */
+  /* height: 60%; */
+
+  width: 55%;
+  height: 70%;
+
   border-radius: 20px;
   /* padding: 15px; */
   border-style: solid;
@@ -26,7 +32,12 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
-  margin-bottom: 8%;
+
+  /* Version chiqui */
+  /* margin-bottom: 8%; */
+
+  margin-bottom: 12%;
+
 }
 
 .img-card {
@@ -58,3 +69,4 @@
   border-top-color: #909090;
   border-top-width: 1px;
 }
+
