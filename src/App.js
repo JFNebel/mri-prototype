@@ -1,6 +1,6 @@
 import './App.css';
-import DropZone from './components/DropZone/DropZone';
-import ResultsView from './components/ResultsView/ResultsView';
+import DropZone from './Components/DropZone/DropZone';
+import ResultsView from './Components/ResultsView/ResultsView';
 import { useState } from 'react'
 
 function App() {

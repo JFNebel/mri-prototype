@@ -2,9 +2,11 @@ import './DropZone.css';
 import React, { useCallback, useState } from 'react'
 import {useDropzone} from 'react-dropzone';
 import Button from '@mui/material/Button';
+import { sendFile } from '../../Services';
 
 function DropZone(props) {
   const [files, setFiles] = useState([]);
+  const [predFile, setPredFile] = useState();
 
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
@@ -30,8 +32,12 @@ function DropZone(props) {
     />
   ))
 
-
-
+  const segmenter = () => {
+    const [ file ] = files;
+    sendFile({ file })
+      .then((data) => setPredFile(data))
+      .catch(error => console.log(error));
+  }
 
   return (
     <>
@@ -62,17 +68,26 @@ function DropZone(props) {
               <div className="img-preview">{images}</div>
             </div>
             <div className="segment-button">
-              <Button variant="outlined" onClick={props.setView}>Segment!</Button>
+              <Button variant="outlined" onClick={segmenter}>Segment!</Button>
             </div>
           </div> :
           <></>
       }
-
-
+      {
+        predFile &&
+          <div className="download-button">
+            <Button variant="outlined" onClick={() => {
+              const url = URL.createObjectURL(predFile.blob);
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = predFile.filename;
+              link.click();
+            }
+            }>Descargar</Button>
+          </div>
+      }
     </>
-
   )
-
 }
 
 export default DropZone
