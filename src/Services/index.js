@@ -2,6 +2,7 @@ const URL_SERVER = process.env.URL_SERVER;
 
 
 export async function sendFile({ file }) {
+  console.log('URL_SERVER', URL_SERVER);
   const url = new URL(URL_SERVER);
   url.pathname = '/api/v1/segmenter/predict';
 
