@@ -1,4 +1,4 @@
-const URL_SERVER = process.env.URL_SERVER;
+const URL_SERVER = 'https://a9f5-2001-1458-204-1-00-102-7780.eu.ngrok.io';
 
 
 export async function sendFile({ file }) {
