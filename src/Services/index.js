@@ -1,12 +1,14 @@
-const URL_SERVER = 'http://127.0.0.1:8000'
+const URL_SERVER = process.env.URL_SERVER;
 
 
 export async function sendFile({ file }) {
   const url = new URL(URL_SERVER);
-  url.pathname = '/predict';
+  url.pathname = '/api/v1/segmenter/predict';
 
   const formData = new FormData();
   formData.append('image', file);
+
+  console.log('Sending file to', url);
 
   try {
     const response = await fetch(url, {
