@@ -34,39 +34,39 @@ function LogIn(props) {
         {/* <TextField focused label='Usuario' placeholder='Ingrese su usuario' style={{backgroundColor: 'white'}}/> */}
 
         <form onSubmit={handleSubmit(onSubmit)} className='login-form'>
-        <TextField 
-          focused 
-          label="Usuario" 
-          className='login-input user-input'
-          // variant="standard" 
-          inputProps={{ 
-            style: { 
-              color: "white",
-              fontFamily: 'Inter',
-              fontWeight: 'bold',
-              fontSize: '12px',
-            } 
-          }} 
-          {...register("correo", {required: true})}
-        />
-        <TextField 
-          focused 
-          label="Contraseña" 
-          className='login-input password-input'
-          // variant="standard" 
-          inputProps={{ 
-            style: { 
-              color: "white",
-              fontFamily: 'Inter',
-              fontWeight: 'bold',
-              fontSize: '12px'
-            } 
-          }} 
-          {...register("feedback", {required: true})}
-        />
-        {errors.exampleRequired && <span>This field is required</span>}
+          <TextField 
+            focused 
+            label="Usuario" 
+            className='login-input user-input'
+            // variant="standard" 
+            inputProps={{ 
+              style: { 
+                color: "white",
+                fontFamily: 'Inter',
+                fontWeight: 'bold',
+                fontSize: '12px',
+              } 
+            }} 
+            {...register("correo", {required: true})}
+          />
+          <TextField 
+            focused 
+            label="Contraseña" 
+            className='login-input password-input'
+            // variant="standard" 
+            inputProps={{ 
+              style: { 
+                color: "white",
+                fontFamily: 'Inter',
+                fontWeight: 'bold',
+                fontSize: '12px'
+              } 
+            }} 
+            {...register("feedback", {required: true})}
+          />
+          {errors.exampleRequired && <span>This field is required</span>}
 
-        <Button className='submit-btn' type='submit' variant="outlined" fullWidth>Ingresar</Button>
+          <Button className='submit-btn' type='submit' variant="outlined" fullWidth>Ingresar</Button>
         </form>
 
       </Paper>

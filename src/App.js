@@ -2,6 +2,7 @@ import './App.css';
 import DropZone from './Components/DropZone/DropZone';
 import LogIn from './Components/LogIn/LogIn';
 import { useState } from 'react'
+import FeedbackModal from './Components/FeedbackModal/FeedbackModal';
 
 function App() {
   // const [uploadView, setUploadView] = useState(true);
@@ -34,6 +35,7 @@ function App() {
           /> :
         <LogIn logInSubmit={submitCredentials} />
       }
+      {/* <FeedbackModal /> */}
 
     </div>
   )

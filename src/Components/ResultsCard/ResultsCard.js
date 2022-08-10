@@ -14,7 +14,7 @@ function ResultsCard(props) {
     <div className='results-card'>
       <div className="button-container">
         <Button color='success' variant='outlined'>Download</Button>
-        <Button onClick={handleOpen} color='error' variant='outlined'>Leave feedback</Button>
+        <Button onClick={handleOpen} color='error' variant='outlined'>Dejar comentario</Button>
       </div>
 
       <Modal
