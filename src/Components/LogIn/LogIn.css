@@ -1,0 +1,29 @@
+.log-in-card{
+  padding: 20px;
+  height: 70vh;
+  width: 30vw;
+
+  border-width: 1px;
+  border-style: solid;
+  border-color: #909090;
+  border-radius: 10px;
+
+  color: #FFFFFF!important;
+  background-color: #1A1B21!important;
+}
+
+.avatar-symbol {
+  background-color: #414150!important;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 15px;
+}
+
+
+.login-input {
+  margin: 20px!important;
+  width: 80%;
+}
+
+.submit-btn{
+  margin-top: 150px!important;
+}
+

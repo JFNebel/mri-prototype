@@ -1,13 +1,18 @@
 import './App.css';
 import DropZone from './Components/DropZone/DropZone';
+import LogIn from './Components/LogIn/LogIn';
 import { useState } from 'react'
 
 function App() {
-  const [uploadView, setUploadView] = useState(true);
-  // const [uploadView, setUploadView] = useState(false);
+  // const [uploadView, setUploadView] = useState(true);
+  const [logInSuccess, setLogInSuccess] = useState(false);
 
-  function segmentView() {
-    setUploadView(!uploadView)
+  // function segmentView() {
+  //   setUploadView(!uploadView)
+  // }
+
+  function submitCredentials() {
+    setLogInSuccess(!logInSuccess);
   }
 
   return (
@@ -22,9 +27,14 @@ function App() {
       {/*     <ResultsView setView={segmentView}/> */}
       {/* } */}
 
-      <DropZone 
-        style={{height:'100%'}} 
-      />
+      {
+        logInSuccess ?
+          <DropZone 
+             style={{height:'100%'}}  
+          /> :
+        <LogIn logInSubmit={submitCredentials} />
+      }
+
     </div>
   )
 }
