@@ -1,4 +1,4 @@
-import './DropZone.css';
+import './DropZoneT2.css';
 import React, { useCallback, useState } from 'react'
 import {useDropzone} from 'react-dropzone';
 import Button from '@mui/material/Button';
@@ -6,15 +6,13 @@ import { sendFile } from '../../Services';
 import PreviewCard from '../PreviewCard/PreviewCard';
 import ResultsCard from '../ResultsCard/ResultsCard';
 
-function DropZone(props) {
+function DropZoneT2(props) {
   const [files, setFiles] = useState([]);
   const [previewView, setPreviewView] = useState();
   const [resultsView, setResultsView] = useState();
   const [predFile, setPredFile] = useState();
 
   const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
-
     // Lógica de lower cards
     setPreviewView(true)
     setResultsView(false)
@@ -40,15 +38,6 @@ function DropZone(props) {
     />
   ))
 
-
-  // The real segmenter
-  // const segmenter = () => {
-  //   const [ file ] = files;
-  //   sendFile({ file })
-  //     .then((data) => setPredFile(data))
-  //     .catch(error => console.log(error));
-  // }
-
   // Dummy segmenter
   const segmenter = () => {
     // Card logic
@@ -66,9 +55,9 @@ function DropZone(props) {
         <div className="dropzone">
           {
             isDragActive ?
-              <p>Arrastra el archivo T1 aquí</p> :
+              <p>Arrastra el archivo aquí T2</p> :
               <p>
-              Arrastra el archivo T1 que deseas subir en este recuadro 
+              Arrastra el archivo T2 que deseas subir en este recuadro 
               <br/><br/>o<br/><br/> 
               Haz click aquí para buscarlo entre tus carpetas.
               </p>
@@ -82,27 +71,8 @@ function DropZone(props) {
       {/* Result component */}
       {resultsView && <ResultsCard />}
 
-      {/* Actual download button */}
-      {/* { */}
-      {/*   predFile && */}
-      {/*     <div className="download-button"> */}
-      {/*       <Button variant="outlined" onClick={() => { */}
-      {/*             const url = URL.createObjectURL(predFile.blob); */}
-      {/*             const link = document.createElement('a'); */}
-      {/*             link.href = url; */}
-      {/*             link.download = predFile.filename; */}
-      {/*             link.click(); */}
-      {/*           } */}
-      {/*         } */}
-      {/*       > */}
-      {/*         Descargar */}
-      {/*       </Button> */}
-      {/*     </div> */}
-      {/* } */}
-
-
     </>
   )
 }
 
-export default DropZone
+export default DropZoneT2
