@@ -53,6 +53,7 @@ function LogIn(props) {
             focused 
             label="Contraseña" 
             className='login-input password-input'
+            type='password'
             // variant="standard" 
             inputProps={{ 
               style: { 

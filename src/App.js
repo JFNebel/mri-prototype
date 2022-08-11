@@ -44,6 +44,7 @@ function App() {
       {/* Componentes individuales */}
       {/* <FeedbackModal /> */}
       {/* <DropZoneT2 /> */}
+      {/* <DropZone /> */}
 
     </div>
   )

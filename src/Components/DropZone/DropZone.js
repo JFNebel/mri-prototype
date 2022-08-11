@@ -1,44 +1,80 @@
 import './DropZone.css';
 import React, { useCallback, useState } from 'react'
 import {useDropzone} from 'react-dropzone';
-import Button from '@mui/material/Button';
-import { sendFile } from '../../Services';
 import PreviewCard from '../PreviewCard/PreviewCard';
 import ResultsCard from '../ResultsCard/ResultsCard';
 
-function DropZone(props) {
+function DropZone() {
   const [files, setFiles] = useState([]);
   const [previewView, setPreviewView] = useState();
   const [resultsView, setResultsView] = useState();
-  const [predFile, setPredFile] = useState();
+
 
   const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
-
-    // Lógica de lower cards
+    // Do que ocurre cuando dropeo algo en el DropZone.
+    
+    // Lógica de rederización para lower cards
     setPreviewView(true)
     setResultsView(false)
     
-    setFiles(
-      acceptedFiles.map(file => Object.assign(file,{
-        preview:URL.createObjectURL(file)
-      }))
-    )
+    // Este set file tiene que appendear
+    setFiles(['hola, funcioó el seter'])
+
+
+    // setFiles((files) => [...files, acceptedFiles])
+    // setFiles([...files, acceptedFiles])
+    // setFiles(files.concat(acceptedFiles))
+
+    console.log('This are my files: ')
+    console.log(files)
+
+    console.log('This are my acceptedFiles: ')
+    console.log(acceptedFiles)
+
+    // console.log('Antes del for each')
+    // files.forEach((entry) => {
+    //   console.log(entry);
+    // });
+
+    // console.log('This are my ...files: ')
+    // console.log(...files)
+    // console.log('This are my [...files, acceptedFiles]: ')
+    // console.log([...files, acceptedFiles])
   }, [])
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+
+
+  const {acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
-    multiple: false
+    maxFiles: 2
+    // multiple: false,
   })
 
-  const images = files.map(file => (
-    <img 
-      key={file.name} 
-      src={file.preview} 
-      alt="image" 
-      style={{ maxWidth:'200px', maxHeight:'200px', margin: '3px' }} 
-    />
-  ))
+
+  // Itemización de las imágenes
+  // const images = files.map(file => (
+  //   <img 
+  //     key={file.name} 
+  //     src={file.preview} 
+  //     alt="image" 
+  //     style={{ maxWidth:'200px', maxHeight:'200px', margin: '3px' }} 
+  //   />
+  // ))
+
+  // Con accepted Items
+  // const acceptedFileItems = acceptedFiles.map(file => (
+  //   <li key={file.path}>
+  //     {file.path} - {file.size} bytes
+  //   </li>
+  // ));
+
+  // Con los files
+    const acceptedFileItems = files.map(file => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+    </li>
+  ));
+
 
 
   // The real segmenter
@@ -49,12 +85,23 @@ function DropZone(props) {
   //     .catch(error => console.log(error));
   // }
 
+
+
+
+
+
+
+
   // Dummy segmenter
   const segmenter = () => {
     // Card logic
     setPreviewView(false)
     setResultsView(true);
   }
+
+
+
+
 
   return (
     <>
@@ -77,10 +124,14 @@ function DropZone(props) {
       </div>
 
       {/* Preview component */}
-      {previewView && <PreviewCard segmenter={segmenter}/>}
+      {previewView && <PreviewCard items={acceptedFileItems} segmenter={segmenter}/>}
 
       {/* Result component */}
       {resultsView && <ResultsCard />}
+
+
+
+
 
       {/* Actual download button */}
       {/* { */}

@@ -1,7 +1,7 @@
 .img-preview-card {
   /* background-color: #323242; */ 
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: center;
   align-items: center;
   border-style: solid;
   border-color: #909090;
