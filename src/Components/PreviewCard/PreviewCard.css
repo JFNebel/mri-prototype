@@ -6,7 +6,7 @@
   border-style: solid;
   border-color: #909090;
   border-width: 1px;
-  border-radius: 20px;
+  border-radius: 10px;
   width: 45%;
   padding: 15px;
   margin-top: 10px;
@@ -15,15 +15,19 @@
   font-size: 17px;
 }
 
+.item-drop {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  font-size: 14px;
+}
+
 .img-preview {
   border-style: solid;
   border-color: #909090;
   border-width: 1px;
   border-radius: 10px;
-  margin: 10px;
+  margin: 10px 0;
+  width: 25vw !important;
 }
 
-.segment-button {
-  margin-left: 25%;
-  margin-right: 25%;
-}
