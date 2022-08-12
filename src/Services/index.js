@@ -1,13 +1,14 @@
 const URL_SERVER = 'https://2eb4-2001-1458-204-1-00-101-7780.eu.ngrok.io';
 
 
-export async function sendFile({ file }) {
+export async function sendFile({ mriT1, mriT2 }) {
   console.log('URL_SERVER', URL_SERVER);
   const url = new URL(URL_SERVER);
   url.pathname = '/api/v1/segmenter/predict';
 
   const formData = new FormData();
-  formData.append('image', file);
+  formData.append('t1', mriT1);
+  formData.append('t2', mriT2);
 
   console.log('Sending file to', url);
 

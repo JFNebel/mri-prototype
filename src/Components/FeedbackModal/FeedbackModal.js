@@ -1,7 +1,7 @@
 import './FeedbackModal.css';
-import React, { useState } from 'react'
-import Modal from '@mui/material/Modal';
-import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { Input, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
@@ -15,13 +15,11 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 
-
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
     color: theme.palette.action.disabled,
   },
 }));
-
 
 const customIcons = {
   1: {
@@ -51,12 +49,11 @@ function IconContainer(props) {
   return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-
 function RadioGroupRating() {
   return (
     <StyledRating
       name="highlight-selected-only"
-      defaultValue={2}
+      defaultValue={3}
       IconContainerComponent={IconContainer}
       getLabelText={(value) => customIcons[value].label}
       highlightSelectedOnly
@@ -64,94 +61,62 @@ function RadioGroupRating() {
   );
 }
 
-
-function FeedbackModal(props) {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+function FeedbackModal({ handleClose }) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
   // console.log(watch("example")); // watch input value by passing the name of it
-  
-
-
 
   return (
     <>
-      <div className="modal-box">
-        <h1 className="form-header">¡Déjanos tus comentarios!</h1>
-
-        <form onSubmit={handleSubmit(onSubmit)} className='form-content'>
-          {/* Aquí tiene que ir la calificación */}
-
-          {/* <TextField */} 
-          {/*   focused */} 
-          {/*   size="small" */} 
-          {/*   id="outlined-basic" */} 
-          {/*   className='correo-input' */}
-          {/*   label="Correo" */} 
-          {/*   variant="outlined" */} 
-          {/*   inputProps={{ */} 
-          {/*     style: { */} 
-          {/*       color: "white", */}
-          {/*       fontFamily: 'Inter', */}
-          {/*       fontWeight: 'bold', */}
-          {/*       fontSize: '12px', */}
-          {/*     } */} 
-          {/*   }} */} 
-          {/*   {...register("correo", {required: true})} */}
-          {/* /> */}
-
-          {/* include validation with required or other standard HTML validation rules */}
-          <TextField 
-            focused 
-            id="outlined-basic" 
-            label="Comentario" 
-            variant="outlined" 
+      <DialogTitle>¡Déjanos tus comentarios!</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Es importante conocer la calidad del modelo, con esta retroalimentación podremos mejorarlo para que pueda ser más eficiente para ti.
+        </DialogContentText>
+        <form onSubmit={handleSubmit(onSubmit)} className="form-content">
+          <TextField
+            label="Comentario"
+            variant="outlined"
             multiline
             fullWidth
-            inputProps={{ 
-              style: { 
-                color: "white",
-                fontFamily: 'Inter',
-                fontWeight: 'bold',
-                fontSize: '12px',
+            rows={4}
+            error={errors.comentario}
+            helperText={errors.comentario && 'El comentario es obligatorio'}
+            inputProps={{
+              style: {
                 height: '110px',
-              } 
-            }} 
-            {...register("comentario", {required: true})}
+              },
+            }}
+            style={{ marginTop: '20px' }}
+            {...register('comentario', { required: true })}
           />
 
-          {errors.exampleRequired && <span>This field is required</span>}
-          
-
-          <Grid align='center' style={{marginTop: '7px'}}>
-            <Typography 
-              component="legend" 
-              style={{
-                color: 'white', 
-                fontWeight: 'bold', 
-                fontFamily: 'Inter', 
-                marginBottom: '5px'
-              }}
+          <Grid align="center" style={{ marginTop: '20px' }}>
+            <Typography
+              style={{ textAlign: 'start', marginBottom: '10px' }}
             >
               Calificación de la segmentación
             </Typography>
             <RadioGroupRating />
           </Grid>
-
-
-          <Button 
-            type='submit' 
-            variant="outlined" 
-            endIcon={<SendIcon />}
-            style={{marginTop: '10px'}}
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
           >
             Enviar
           </Button>
-        </form>
-
-      </div>
+      </DialogActions>
     </>
-  )
-
+  );
 }
 
-export default FeedbackModal
+export default FeedbackModal;
