@@ -38,7 +38,7 @@ const rejectStyle = {
 function DropZone() {
   const [files, setFiles] = useState([]);
   const [segment, setSegment] = useState();
-  const [downloadFile, setDownloadFile] = useState(true);
+  const [downloadFile, setDownloadFile] = useState();
   const [previewView, setPreviewView] = useState();
 
   React.useEffect(() => {
