@@ -5,6 +5,8 @@ import PreviewCard from '../PreviewCard/PreviewCard';
 import ResultsCard from '../ResultsCard/ResultsCard';
 import { Button, Container } from '@mui/material';
 
+import { sendFile } from '../../Services'
+
 const baseStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -35,18 +37,17 @@ const rejectStyle = {
 
 function DropZone() {
   const [files, setFiles] = useState([]);
-  const [previewView, setPreviewView] = useState();
   const [segment, setSegment] = useState();
-  const [resultsView, setResultsView] = useState();
+  const [downloadFile, setDownloadFile] = useState(true);
+  const [previewView, setPreviewView] = useState();
 
   React.useEffect(() => {
     setSegment(files.length == 2);
     setPreviewView(!!files.length);
   }, [files]);
 
-  // Do que ocurre cuando dropeo algo en el DropZone.
   const onDrop = useCallback((acceptedFiles) => {
-    setFiles((files) => [...files, acceptedFiles].flat()); // Actualizo arreglo de files
+    setFiles((files) => [...files, acceptedFiles].flat());
   }, []);
 
   const {
@@ -60,14 +61,7 @@ function DropZone() {
     onDrop,
     maxFiles: 2,
     disabled: files.length >= 2,
-    // multiple: false,
   });
-
-  // Dummy view switcher
-  const lowerCardSwitcher = () => {
-    setPreviewView(false);
-    setResultsView(true);
-  };
 
   const style = React.useMemo(
     () => ({
@@ -76,8 +70,20 @@ function DropZone() {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isFocused, isDragAccept, isDragReject]
+    [ isFocused, isDragAccept, isDragReject ]
   );
+
+  const sendFiles = () => {
+    const mriT1 = files.find(f => f.mriType == 't1');
+    const mriT2 = files.find(f => f.mriType == 't2');
+    sendFile({ mriT1, mriT2 })
+      .then(res => {
+        setDownloadFile(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   return (
     <Container className="main-dropzone">
@@ -106,11 +112,11 @@ function DropZone() {
               console.log(files);
             }}
           >
-              Segmentar
+            Segmentar
           </Button>
         </div>
       )}
-      {resultsView && <ResultsCard />}
+      {downloadFile && <ResultsCard downloadFile={downloadFile} />}
     </Container>
   );
 }
