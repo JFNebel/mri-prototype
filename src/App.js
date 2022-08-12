@@ -1,28 +1,35 @@
 import './App.css';
-import DropZone from './Components/DropZone/DropZone';
-import ResultsView from './Components/ResultsView/ResultsView';
 import { useState } from 'react'
+import LogIn from './Components/LogIn/LogIn';
+import DropZone from './Components/DropZone/DropZone';
+
+// Componentes individuales
+// import FeedbackModal from './Components/FeedbackModal/FeedbackModal';
+// import T1T2Choice from './Components/T1T2Choice/T1T2Choice';
+
 
 function App() {
-  const [uploadView, setUploadView] = useState(true);
-  // const [uploadView, setUploadView] = useState(false);
 
-  function segmentView() {
-    console.log("Hola, esto activa el segment view.")
-    setUploadView(!uploadView)
+  // Component selectors
+  const [logInSuccess, setLogInSuccess] = useState(false);
+  // const [uploadView, setUploadView] = useState(true);
+
+  // Función de auth
+  function submitCredentials() {
+    setLogInSuccess(!logInSuccess);
   }
 
   return (
     <div className="App">
-      {
-        uploadView ?
-          <DropZone 
-            style={{height:'100%'}} 
-            setView={segmentView}
-          />
-          :
-          <ResultsView setView={segmentView}/>
-      }
+
+      {/* Verídico */}
+      {logInSuccess ? <DropZone />:<LogIn logInSubmit={submitCredentials} />}
+
+
+      {/* Componentes individuales */}
+      {/* <FeedbackModal /> */}
+      {/* <DropZone /> */}
+
     </div>
   )
 }

@@ -1,0 +1,29 @@
+.img-preview-card {
+  /* background-color: #323242; */ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-color: #909090;
+  border-width: 1px;
+  border-radius: 20px;
+  width: 45%;
+  padding: 15px;
+  margin-top: 10px;
+  color: #D9D9D9;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.img-preview {
+  border-style: solid;
+  border-color: #909090;
+  border-width: 1px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.segment-button {
+  margin-left: 25%;
+  margin-right: 25%;
+}

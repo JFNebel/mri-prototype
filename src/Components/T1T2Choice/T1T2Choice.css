@@ -1,0 +1,10 @@
+.t1-t2-card {
+  width: 30%;
+  height: 30%;
+
+  background-color: #323242; 
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #909090;
+}
