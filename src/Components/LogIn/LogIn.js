@@ -5,11 +5,11 @@ import LoginIcon from '@mui/icons-material/Login';
 import { Grid, Paper, Avatar, TextField, Button } from '@mui/material';
 
 function LogIn(props) {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-    // Esto cambia el login, debe ocurrir cuando las credenciales han sido autenticadas.
+  const onSubmit = (data) => {
+    // Aquí se mandan credenciales al auth module del backend
+    console.log(data);
     props.logInSubmit();
   }
 
@@ -20,6 +20,7 @@ function LogIn(props) {
 
         <Grid align="center">
           <div className="log-in-card-content">
+            <h2>Segmentador STN</h2>
             <Avatar 
               className='avatar-symbol' 
               variant='rounded'
@@ -27,13 +28,13 @@ function LogIn(props) {
             >
               <LoginIcon />
             </Avatar>
-            <h3>MRI Segmenter Log In</h3>
+            <h3 style={{ paddingTop: '10px'}}>Log In</h3>
           </div>
         </Grid>
 
-        {/* <TextField focused label='Usuario' placeholder='Ingrese su usuario' style={{backgroundColor: 'white'}}/> */}
 
         <form onSubmit={handleSubmit(onSubmit)} className='login-form'>
+
           <TextField 
             focused 
             label="Usuario" 
@@ -49,6 +50,7 @@ function LogIn(props) {
             }} 
             {...register("correo", {required: true})}
           />
+
           <TextField 
             focused 
             label="Contraseña" 
@@ -65,9 +67,12 @@ function LogIn(props) {
             }} 
             {...register("feedback", {required: true})}
           />
+
+          {/* Manejo de errores para required fields */}
           {errors.exampleRequired && <span>This field is required</span>}
 
           <Button className='submit-btn' type='submit' variant="outlined" fullWidth>Ingresar</Button>
+
         </form>
 
       </Paper>
