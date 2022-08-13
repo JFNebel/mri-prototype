@@ -56,7 +56,7 @@ function LogIn(props) {
           <Button
             className="submit-btn"
             type="submit"
-            variant="outlined"
+            variant="contained"
             fullWidth
           >
             Ingresar

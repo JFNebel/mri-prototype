@@ -4,8 +4,9 @@ import React, { useCallback, useState } from 'react';
 import PreviewCard from '../PreviewCard/PreviewCard';
 import ResultsCard from '../ResultsCard/ResultsCard';
 import { Button, Container } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
-import { sendFile } from '../../Services'
+import { sendFile } from '../../Services';
 
 const baseStyle = {
   display: 'flex',
@@ -40,6 +41,8 @@ function DropZone() {
   const [segment, setSegment] = useState();
   const [downloadFile, setDownloadFile] = useState();
   const [previewView, setPreviewView] = useState();
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
     setSegment(files.length == 2);
@@ -76,13 +79,22 @@ function DropZone() {
   const sendFiles = () => {
     const mriT1 = files.find(f => f.mriType == 't1');
     const mriT2 = files.find(f => f.mriType == 't2');
-    sendFile({ mriT1, mriT2 })
-      .then(res => {
-        setDownloadFile(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+
+    if (!mriT1) {
+      enqueueSnackbar('You must upload a T1 MRI', { variant: 'error' })
+    }
+    if (!mriT2) {
+      enqueueSnackbar('You must upload a T2 MRI', { variant: 'error' })
+    }
+    if (mriT1 && mriT2) {
+      return sendFile({ mriT1, mriT2 })
+        .then(res => {
+          setDownloadFile(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 
   return (
@@ -108,9 +120,7 @@ function DropZone() {
         <div className="segment-button">
           <Button
             variant="outlined"
-            onClick={() => {
-              console.log(files);
-            }}
+            onClick={() => sendFiles()}
           >
             Segmentar
           </Button>
