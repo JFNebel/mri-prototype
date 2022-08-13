@@ -1,3 +1,7 @@
 .admin-table {
   width: 75vw;
 }
+
+.admin-grid .MuiButton-root {
+  padding: 6px 0 !important;
+}

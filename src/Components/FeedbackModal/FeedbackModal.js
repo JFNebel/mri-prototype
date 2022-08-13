@@ -1,6 +1,12 @@
 import './FeedbackModal.css';
 import React from 'react';
-import { DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import {
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useForm } from 'react-hook-form';
 import { Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -12,6 +18,10 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { useSnackbar } from 'notistack';
+import MainContext from '../../context';
+
+import { uploadPrediction } from '../../Services';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -22,23 +32,23 @@ const StyledRating = styled(Rating)(({ theme }) => ({
 const customIcons = {
   1: {
     icon: <SentimentVeryDissatisfiedIcon color="error" />,
-    label: 'Very Dissatisfied',
+    label: 'Muy mal',
   },
   2: {
     icon: <SentimentDissatisfiedIcon color="error" />,
-    label: 'Dissatisfied',
+    label: 'Mal',
   },
   3: {
     icon: <SentimentSatisfiedIcon color="warning" />,
-    label: 'Neutral',
+    label: 'Regular',
   },
   4: {
     icon: <SentimentSatisfiedAltIcon color="success" />,
-    label: 'Satisfied',
+    label: 'Bueno',
   },
   5: {
     icon: <SentimentVerySatisfiedIcon color="success" />,
-    label: 'Very Satisfied',
+    label: 'Muy bueno',
   },
 };
 
@@ -47,33 +57,56 @@ function IconContainer(props) {
   return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-function RadioGroupRating() {
+function RadioGroupRating({ setRating, rating }) {
   return (
     <StyledRating
       name="highlight-selected-only"
-      defaultValue={3}
+      defaultValue={rating}
       IconContainerComponent={IconContainer}
-      getLabelText={(value) => customIcons[value].label}
+      getLabelText={(value) => setRating(customIcons[value].label)}
       highlightSelectedOnly
     />
   );
 }
 
-function FeedbackModal({ handleClose }) {
+function FeedbackModal({ handleClose, downloadFile }) {
+  const mainContext = React.useContext(MainContext);
+  const { user } = mainContext;
+  const { enqueueSnackbar } = useSnackbar();
+  const [rating, setRating] = React.useState(3);
+  const [loadingFeed, setLoadingFeed] = React.useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  // console.log(watch("example")); // watch input value by passing the name of it
+
+  const onSubmit = (data) => {
+    setLoadingFeed(true);
+    data.rating = rating;
+    data = { ...data, ...downloadFile, user: user.email };
+    console.log(data);
+    return uploadPrediction(data)
+      .then(() => {
+        enqueueSnackbar('Gracias por tu feedback', { variant: 'success' });
+        setLoadingFeed(false);
+        setTimeout(() => handleClose(), 3000);
+      })
+      .catch((error) => {
+        setLoadingFeed(false);
+        console.log(error);
+      });
+  };
 
   return (
     <>
       <DialogTitle>¡Déjanos tus comentarios!</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Es importante conocer la calidad del modelo, con esta retroalimentación podremos mejorarlo para que pueda ser más eficiente para ti.
+          Es importante conocer la calidad del modelo, con esta
+          retroalimentación podremos mejorarlo para que pueda ser más eficiente
+          para ti.
         </DialogContentText>
         <form onSubmit={handleSubmit(onSubmit)} className="form-content">
           <TextField
@@ -90,27 +123,22 @@ function FeedbackModal({ handleClose }) {
               },
             }}
             style={{ marginTop: '20px' }}
-            {...register('comentario', { required: true })}
+            {...register('comment', { required: true })}
           />
 
           <Grid align="center" style={{ marginTop: '20px' }}>
-            <Typography
-              style={{ textAlign: 'start', marginBottom: '10px' }}
-            >
+            <Typography style={{ textAlign: 'start', marginBottom: '10px' }}>
               Calificación de la segmentación
             </Typography>
-            <RadioGroupRating />
+            <RadioGroupRating setRating={setRating} rating={rating} />
           </Grid>
         </form>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button
-            type="submit"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Enviar
-          </Button>
+        <LoadingButton loading={loadingFeed} type="submit" onClick={handleSubmit(onSubmit)}>
+          Enviar
+        </LoadingButton>
       </DialogActions>
     </>
   );

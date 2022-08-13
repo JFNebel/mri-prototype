@@ -2,6 +2,7 @@ import React from 'react';
 import MUIDataTable from 'mui-datatables';
 
 import { Grid } from '@mui/material';
+import { getTableData } from '../../Services'
 
 import './admin.css'
 
@@ -36,7 +37,7 @@ const columns = [
   },
 ];
 
-const data = [[5, 'Feo el proto', 'url del archivo', 'Eduardo']];
+//const data = [[5, 'Feo el proto', 'url del archivo', 'Eduardo']];
 
 const options = {
   filterType: 'checkbox',
@@ -45,12 +46,30 @@ const options = {
 };
 
 const Admin = () => {
+
+  const [dataTable, setDataTable] = React.useState([]);
+
+  React.useEffect(() => {
+    if (!dataTable.length) {
+      console.log('Admin: useEffect');
+      getTableData()
+        .then(docs => {
+          console.log(docs);
+          setDataTable(docs);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    return;
+  });
+
   return (
-    <Grid container direction="row" justifyContent="center" alignItems="center">
+    <Grid container direction="row" justifyContent="center" alignItems="center" className='admin-grid'>
       <MUIDataTable
         className="admin-table"
         title="Retroalimentación de usuarios"
-        data={data}
+        data={dataTable}
         columns={columns}
         options={options}
       />

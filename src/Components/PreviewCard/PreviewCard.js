@@ -4,11 +4,10 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 
 function PreviewCard(props) {
-
   React.useEffect(() => {
     console.log('PreviewCard: useEffect');
     console.log(props.files);
-  } , [props.files]);
+  }, [props.files]);
 
   return (
     <div className="img-preview">
@@ -21,35 +20,39 @@ function PreviewCard(props) {
                 : file.name}{' '}
               ({(file.size / 1024 / 1024).toFixed(2)} MB)
             </div>
-            <div>
-              <select
-                id={`mriSelect-${idx}`}
-                onChange={e => {
-                  const selectBox = document.getElementById(`mriSelect-${idx}`);
-                  const selectedValue = selectBox.options[selectBox.selectedIndex].value;
-                  props.setFiles(fs => {
-                    fs[idx].mriType = selectedValue;
-                    return fs;
-                  });
+            <div className='action-buttons'>
+              <div style={{ marginRight: '12px' }}>
+                <select
+                  id={`mriSelect-${idx}`}
+                  onChange={(e) => {
+                    const selectBox = document.getElementById(
+                      `mriSelect-${idx}`
+                    );
+                    const selectedValue =
+                      selectBox.options[selectBox.selectedIndex].value;
+                    props.setFiles((fs) => {
+                      fs[idx].mriType = selectedValue;
+                      return fs;
+                    });
+                  }}
+                >
+                  <option value="" defaultValue></option>
+                  <option value="t1">T1</option>
+                  <option value="t2">T2</option>
+                </select>
+              </div>
+              <div
+                style={{ display: 'flex', alignItems: 'center' }}
+                onClick={() => {
+                  console.log(props.files);
+                  props.setFiles((files) =>
+                    files.filter((f) => f.name !== file.name)
+                  );
+                  console.log(props.files);
                 }}
               >
-                <option value='' defaultValue></option>
-                <option value='t1'>T1</option>
-                <option value='t2'>T2</option>
-              </select>
-            </div>
-            <div
-              onClick={() => {
-                console.log(props.files);
-                props.setFiles(files =>
-                  files.filter(f => f.name !== file.name)
-                );
-                console.log(props.files);
-              }}
-            >
-              <Delete
-                style={{ color: '#707070' }}
-              />
+                <Delete style={{ color: '#707070' }} />
+              </div>
             </div>
           </div>
         ))}

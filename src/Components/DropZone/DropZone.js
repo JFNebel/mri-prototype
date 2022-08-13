@@ -116,7 +116,7 @@ function DropZone() {
         </div>
       </div>
       {previewView && <PreviewCard setFiles={setFiles} files={files} />}
-      {segment && (
+      {segment && !downloadFile && (
         <div className="segment-button">
           <Button
             variant="outlined"

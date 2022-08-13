@@ -29,7 +29,7 @@ function ResultsCard({ downloadFile }) {
         <Button onClick={handleOpen} color='info' variant='outlined'>Dejar comentario</Button>
       </div>
         <Dialog open={open} onClose={handleClose}>
-        <FeedbackModal handleClose={handleClose} />
+        <FeedbackModal handleClose={handleClose} downloadFile={downloadFile} />
       </Dialog>
     </div>
   )

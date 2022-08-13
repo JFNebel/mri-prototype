@@ -107,7 +107,9 @@ export default function PersistentDrawerLeft({ children }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            {
+              user.admin ? 'Administrador' : 'Segmentador STN'
+            }
           </Typography>
         </Toolbar>
       </AppBar>

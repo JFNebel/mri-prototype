@@ -6,6 +6,7 @@ import { Grid, Paper, Avatar, TextField, Button } from '@mui/material';
 import {
   useNavigate,
 } from "react-router-dom";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { login } from '../../Services';
 
@@ -22,18 +23,22 @@ function LogIn(props) {
 
   const mainContext = React.useContext(MainContext);
   const { setUser } = mainContext;
+  const [loading, setLoadingState] = React.useState(false);
 
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = (data) => {
+    setLoadingState(true);
     return login(data)
       .then((user) => {
+        setLoadingState(false);
         setUser(user);
         return navigate(user.admin ? '/admin' : '/segmenter');
       })
       .catch((_) => {
+        setLoadingState(false);
         return enqueueSnackbar('Credenciales no válidas', { variant: 'error' });
       });
   };
@@ -73,14 +78,15 @@ function LogIn(props) {
             helperText={errors.password && 'La contraseña es requerida'}
             {...register('password', { required: true })}
           />
-          <Button
+          <LoadingButton
+            loading={loading}
             className="submit-btn"
             type="submit"
             variant="contained"
             fullWidth
           >
             Ingresar
-          </Button>
+          </LoadingButton>
         </form>
       </Paper>
     </Grid>
