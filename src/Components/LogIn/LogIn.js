@@ -3,6 +3,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import LoginIcon from '@mui/icons-material/Login';
 import { Grid, Paper, Avatar, TextField, Button } from '@mui/material';
+import {
+  useNavigate,
+} from "react-router-dom";
+
+import { login } from '../../Services';
+
+import { useSnackbar } from 'notistack';
 
 function LogIn(props) {
   const {
@@ -11,13 +18,22 @@ function LogIn(props) {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit = (data) => {
-    console.log(data);
-    props.logInSubmit();
+    return login(data)
+      .then((user) => {
+        navigate(user.admin ? '/admin' : '/segmenter');
+      })
+      .catch((_) => {
+        enqueueSnackbar('Credenciales no válidas', { variant: 'error' });
+      });
   };
 
   return (
-    <Grid>
+    <Grid container direction="row" justifyContent="center" alignItems="center">
       <Paper className="log-in-card" elevation={10}>
         <Grid align="center">
           <div className="log-in-card-content">
@@ -36,23 +52,21 @@ function LogIn(props) {
         <form onSubmit={handleSubmit(onSubmit)} className="login-form">
           <TextField
             fullWidth
-            label="Usuario"
+            label="Correo"
             className="login-input user-input"
-            {...register('correo', { required: true })}
+            error={errors.email}
+            helperText={errors.email && 'La dirección de correo es requerida'}
+            {...register('email', { required: true })}
           />
-
           <TextField
             fullWidth
             label="Contraseña"
             className="login-input password-input"
             type="password"
-            // variant="standard"
-            {...register('feedback', { required: true })}
+            error={errors.password}
+            helperText={errors.password && 'La contraseña es requerida'}
+            {...register('password', { required: true })}
           />
-
-          {/* Manejo de errores para required fields */}
-          {errors.exampleRequired && <span>This field is required</span>}
-
           <Button
             className="submit-btn"
             type="submit"
