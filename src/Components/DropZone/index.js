@@ -3,8 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import React, { useCallback, useState } from 'react';
 import PreviewCard from '../PreviewCard';
 import ResultsCard from '../ResultsCard';
-import { Button, Container } from '@mui/material';
-import { useSnackbar } from 'notistack';
+import { Container } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { sendFile } from '../../services';
@@ -48,7 +47,7 @@ function DropZone() {
   const { enqueueSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    setSegment(files.length == 2);
+    setSegment(files.length === 2);
     setPreviewView(!!files.length);
   }, [files]);
 

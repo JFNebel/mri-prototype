@@ -18,10 +18,8 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import { useSnackbar } from 'notistack';
-import MainContext from '../../context';
 
-import { uploadPrediction } from '../../services';
+
 import { useSnackbar } from 'notistack';
 import MainContext from '../../context';
 
@@ -73,12 +71,20 @@ function RadioGroupRating({ setRating, rating }) {
   );
 }
 
-function FeedbackModal({ handleClose }) {
+function FeedbackModal({ handleClose, downloadFile }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const mainContext = React.useContext(MainContext);
+  const { user } = mainContext;
+
+  const [loadingFeed, setLoadingFeed] = React.useState(false);
+  const [rating, setRating] = React.useState(3);
 
   const onSubmit = (data) => {
     setLoadingFeed(true);
