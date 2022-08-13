@@ -21,7 +21,7 @@ import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfi
 import { useSnackbar } from 'notistack';
 import MainContext from '../../context';
 
-import { uploadPrediction } from '../../Services';
+import { uploadPrediction } from '../../services';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {

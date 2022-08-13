@@ -2,7 +2,7 @@ import './ResultsCard.css';
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
-import FeedbackModal from '../FeedbackModal/FeedbackModal';
+import FeedbackModal from '../FeedbackModal';
 
 
 function ResultsCard({ downloadFile }) {

@@ -2,7 +2,7 @@ import React from 'react';
 import MUIDataTable from 'mui-datatables';
 
 import { Grid } from '@mui/material';
-import { getTableData } from '../../Services'
+import { getTableData } from '../../services'
 
 import './admin.css'
 

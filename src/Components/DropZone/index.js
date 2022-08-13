@@ -1,12 +1,12 @@
 import './DropZone.css';
 import { useDropzone } from 'react-dropzone';
 import React, { useCallback, useState } from 'react';
-import PreviewCard from '../PreviewCard/PreviewCard';
-import ResultsCard from '../ResultsCard/ResultsCard';
+import PreviewCard from '../PreviewCard';
+import ResultsCard from '../ResultsCard';
 import { Button, Container } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
-import { sendFile } from '../../Services';
+import { sendFile } from '../../services';
 
 const baseStyle = {
   display: 'flex',
