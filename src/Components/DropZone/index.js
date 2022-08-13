@@ -3,10 +3,11 @@ import { useDropzone } from 'react-dropzone';
 import React, { useCallback, useState } from 'react';
 import PreviewCard from '../PreviewCard';
 import ResultsCard from '../ResultsCard';
-import { Button, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { sendFile } from '../../services';
+import { LoadingButton } from '@mui/lab';
 
 const baseStyle = {
   display: 'flex',
@@ -41,6 +42,7 @@ function DropZone() {
   const [segment, setSegment] = useState();
   const [downloadFile, setDownloadFile] = useState();
   const [previewView, setPreviewView] = useState();
+  const [loading, setLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -77,24 +79,28 @@ function DropZone() {
   );
 
   const sendFiles = () => {
+    setLoading(true);
     const mriT1 = files.find(f => f.mriType === 't1');
     const mriT2 = files.find(f => f.mriType === 't2');
 
     if (!mriT1) {
-      enqueueSnackbar('You must upload a T1 MRI', { variant: 'error' })
+      enqueueSnackbar('Debe seleccionar una MRI T1', { variant: 'error' })
     }
     if (!mriT2) {
-      enqueueSnackbar('You must upload a T2 MRI', { variant: 'error' })
+      enqueueSnackbar('Debe seleccionar una MRI T2', { variant: 'error' })
     }
     if (mriT1 && mriT2) {
       return sendFile({ mriT1, mriT2 })
         .then(res => {
+          setLoading(false);
           setDownloadFile(res);
         })
         .catch(err => {
+          setLoading(false);
           console.log(err);
         });
     }
+    setLoading(false);
   }
 
   return (
@@ -116,14 +122,15 @@ function DropZone() {
         </div>
       </div>
       {previewView && <PreviewCard setFiles={setFiles} files={files} />}
-      {segment && !downloadFile && (
+      {segment && !downloadFile && !downloadFile && (
         <div className="segment-button">
-          <Button
-            variant="outlined"
+          <LoadingButton
+            loading={loading}
+            variant="contained"
             onClick={() => sendFiles()}
           >
             Segmentar
-          </Button>
+          </LoadingButton>
         </div>
       )}
       {downloadFile && <ResultsCard downloadFile={downloadFile} />}

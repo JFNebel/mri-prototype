@@ -28,18 +28,45 @@ export async function login({ email, password }) {
   }
 }
 
-export async function getTableData() {
-  const collectionRef = collection(db, 'feedbacks');
-  const docs = await getDocs(collectionRef);
-  return docs.docs.map(doc => {
-    const { comment, rating, url, filename, user } = doc.data();
-    return [ rating, comment, <a href={url}>{filename}</a>, user || 'Anónimo' ];
-  });
+export async function getTableData({ type = 'feedback' }) {
+  if (type === 'feedback') {
+    const collectionRef = collection(db, 'feedbacks');
+    const docs = await getDocs(collectionRef);
+    return docs.docs.map(doc => {
+      const { comment, rating, url, filename, user } = doc.data();
+      return [ rating, comment, <a href={url}>{filename}</a>, user || 'Anónimo' ];
+    });
+  } else if (type === 'users') {
+    /* const auth = getAuth();
+    try {
+      const { users } = getAuth().li
+    } catch (error) {
+      
+    }
+    getAuth().listUsers(1000, nextPageToken)
+    .then((listUsersResult) => {
+      listUsersResult.users.forEach((userRecord) => {
+        console.log('user', userRecord.toJSON());
+      });
+      if (listUsersResult.pageToken) {
+        // List next batch of users.
+        listAllUsers(listUsersResult.pageToken);
+      }
+    })
+    .catch((error) => {
+      console.log('Error listing users:', error);
+    }); */
+  }
 }
 
 
 export async function uploadPrediction(params) {
-  const { filename, blob, comment, rating, user } = params;
+  let { filename, blob, comment, rating, user } = params;
+
+  const [name, ...ext] = filename.split('.');
+
+  filename = `${name}_${new Date().getTime()}.${ext.join('.')}`;
+
   const refPath = `segmentations/${filename}`;
   const fileRef = ref(storage, refPath);
 

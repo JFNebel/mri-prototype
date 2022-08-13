@@ -2,7 +2,9 @@ import React from 'react';
 import MUIDataTable from 'mui-datatables';
 
 import { Grid } from '@mui/material';
-import { getTableData } from '../../services'
+import { getTableData } from '../../services';
+
+import MainContext from '../../context';
 
 import './admin.css'
 
@@ -40,19 +42,25 @@ const columns = [
 //const data = [[5, 'Feo el proto', 'url del archivo', 'Eduardo']];
 
 const options = {
-  filterType: 'checkbox',
+  //filterType: 'checkbox',
+  selectableRowsHideCheckboxes: true,
   print: false,
   viewColumns: false,
+  download: false,
 };
 
 const Admin = () => {
+  const mainContext = React.useContext(MainContext);
+  const { managUser, setManagUser } = mainContext;
+
 
   const [dataTable, setDataTable] = React.useState([]);
 
   React.useEffect(() => {
     if (!dataTable.length) {
       console.log('Admin: useEffect');
-      getTableData()
+      const type = managUser ? 'users' : 'feedback';
+      getTableData({ type })
         .then(docs => {
           console.log(docs);
           setDataTable(docs);
