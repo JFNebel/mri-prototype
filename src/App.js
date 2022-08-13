@@ -1,36 +1,41 @@
-import './App.css';
-import { useState } from 'react'
-import LogIn from './Components/LogIn/LogIn';
-import DropZone from './Components/DropZone/DropZone';
+import React from 'react';
+import { SnackbarProvider } from 'notistack';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Componentes individuales
-// import FeedbackModal from './Components/FeedbackModal/FeedbackModal';
-// import T1T2Choice from './Components/T1T2Choice/T1T2Choice';
+import Admin from './components/Admin'
+import Drawer from './components/Drawer';
+import LogIn from './components/LogIn';
+import DropZone from './components/DropZone';
+
+import MainContext from './context';
 
 
-function App() {
+import './firebase';
 
-  // Component selectors
-  const [logInSuccess, setLogInSuccess] = useState(false);
-  // const [uploadView, setUploadView] = useState(true);
+const App = () => {
 
-  // Función de auth
-  function submitCredentials() {
-    setLogInSuccess(!logInSuccess);
-  }
+  const [user, setUser] = React.useState({});
+  const [managUser, setManagUser] = React.useState(false);
+
+  const valueContext = {
+    user,
+    setUser,
+    managUser,
+    setManagUser,
+  };
 
   return (
-    <div className="App">
-
-      {/* Verídico */}
-      {logInSuccess ? <DropZone />:<LogIn logInSubmit={submitCredentials} />}
-
-
-      {/* Componentes individuales */}
-      {/* <FeedbackModal /> */}
-      {/* <DropZone /> */}
-
-    </div>
+    <MainContext.Provider value={valueContext}>
+      <BrowserRouter>
+      <SnackbarProvider>
+        <Routes>
+          <Route path="/" element={<LogIn />} />
+          <Route path="admin" element={<Drawer><Admin/></Drawer>} />
+          <Route path="segmenter" element={<Drawer><DropZone /></Drawer>} />
+      </Routes>
+      </SnackbarProvider>
+    </BrowserRouter>
+  </MainContext.Provider>
   )
 }
 

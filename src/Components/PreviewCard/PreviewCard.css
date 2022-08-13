@@ -1,5 +1,4 @@
 .img-preview-card {
-  /* background-color: #323242; */ 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,11 +22,16 @@
 }
 
 .img-preview {
-  border-style: solid;
-  border-color: #909090;
+  margin-top: 24px;
   border-width: 1px;
   border-radius: 10px;
-  margin: 10px 0;
-  width: 25vw !important;
+  border-style: solid;
+  width: 50vw !important;
+  border-color: #b0b0b0;
 }
 
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

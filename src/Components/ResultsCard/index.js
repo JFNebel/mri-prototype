@@ -2,7 +2,7 @@ import './ResultsCard.css';
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
-import FeedbackModal from '../FeedbackModal/FeedbackModal';
+import FeedbackModal from '../FeedbackModal';
 
 
 function ResultsCard({ downloadFile }) {
@@ -29,7 +29,7 @@ function ResultsCard({ downloadFile }) {
         <Button onClick={handleOpen} color='info' variant='outlined'>Dejar comentario</Button>
       </div>
         <Dialog open={open} onClose={handleClose}>
-        <FeedbackModal handleClose={handleClose} />
+        <FeedbackModal handleClose={handleClose} downloadFile={downloadFile} />
       </Dialog>
     </div>
   )
