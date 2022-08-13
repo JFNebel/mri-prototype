@@ -42,10 +42,10 @@ function DropZone() {
   const [downloadFile, setDownloadFile] = useState();
   const [previewView, setPreviewView] = useState();
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    setSegment(files.length == 2);
+    setSegment(files.length === 2);
     setPreviewView(!!files.length);
   }, [files]);
 
@@ -77,8 +77,8 @@ function DropZone() {
   );
 
   const sendFiles = () => {
-    const mriT1 = files.find(f => f.mriType == 't1');
-    const mriT2 = files.find(f => f.mriType == 't2');
+    const mriT1 = files.find(f => f.mriType === 't1');
+    const mriT2 = files.find(f => f.mriType === 't2');
 
     if (!mriT1) {
       enqueueSnackbar('You must upload a T1 MRI', { variant: 'error' })

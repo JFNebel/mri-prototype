@@ -82,7 +82,7 @@ export default function PersistentDrawerLeft({ children }) {
     if (!user?.email) {
       navigate('/');
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

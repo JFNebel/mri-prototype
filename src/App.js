@@ -13,7 +13,6 @@ import MainContext from './context';
 import './firebase';
 
 const App = () => {
-  const mainContext = React.useContext(MainContext);
 
   const [user, setUser] = React.useState({});
   const [managUser, setManagUser] = React.useState(false);

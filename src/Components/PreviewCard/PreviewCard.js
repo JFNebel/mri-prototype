@@ -1,27 +1,14 @@
 import './PreviewCard.css';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Delete } from '@mui/icons-material';
 
 function PreviewCard(props) {
 
-  const refSelect = React.useRef();
-
-
   React.useEffect(() => {
     console.log('PreviewCard: useEffect');
     console.log(props.files);
   } , [props.files]);
-
-  const getDefaultValue = (idx) => {
-    let value = '';
-    if (idx == 0) {
-      value = 't1';
-    }
-    value = props.files[0].mriType == 't1' ? 't2' : 't1';
-    props.files[idx].mriType = value;
-    return value;
-  }
 
   return (
     <div className="img-preview">

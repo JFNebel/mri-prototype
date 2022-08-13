@@ -1,14 +1,12 @@
 import './FeedbackModal.css';
-import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import React from 'react';
+import { DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Input, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import Rating, { IconContainerProps } from '@mui/material/Rating';
+import Rating from '@mui/material/Rating';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
@@ -65,7 +63,6 @@ function FeedbackModal({ handleClose }) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => console.log(data);
