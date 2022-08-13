@@ -22,6 +22,10 @@ import { useSnackbar } from 'notistack';
 import MainContext from '../../context';
 
 import { uploadPrediction } from '../../services';
+import { useSnackbar } from 'notistack';
+import MainContext from '../../context';
+
+import { uploadPrediction } from '../../services';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -63,19 +67,13 @@ function RadioGroupRating({ setRating, rating }) {
       name="highlight-selected-only"
       defaultValue={rating}
       IconContainerComponent={IconContainer}
-      getLabelText={(value) => setRating(customIcons[value].label)}
+      onChange={(_, newValue) => setRating(customIcons[newValue].label)}
       highlightSelectedOnly
     />
   );
 }
 
-function FeedbackModal({ handleClose, downloadFile }) {
-  const mainContext = React.useContext(MainContext);
-  const { user } = mainContext;
-  const { enqueueSnackbar } = useSnackbar();
-  const [rating, setRating] = React.useState(3);
-  const [loadingFeed, setLoadingFeed] = React.useState(false);
-
+function FeedbackModal({ handleClose }) {
   const {
     register,
     handleSubmit,
@@ -105,7 +103,9 @@ function FeedbackModal({ handleClose, downloadFile }) {
       <DialogContent>
         <DialogContentText>
           Es importante conocer la calidad del modelo, con esta
+         
           retroalimentación podremos mejorarlo para que pueda ser más eficiente
+         
           para ti.
         </DialogContentText>
         <form onSubmit={handleSubmit(onSubmit)} className="form-content">

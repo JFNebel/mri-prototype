@@ -135,7 +135,7 @@ export default function PersistentDrawerLeft({ children }) {
             )}
           </IconButton>
         </DrawerHeader>
-        {!!user.admin && !managUser && (
+        {/* {!!user.admin && !managUser && (
           <>
             <Divider />
             <List>
@@ -149,7 +149,7 @@ export default function PersistentDrawerLeft({ children }) {
               </ListItem>
             </List>
           </>
-        )}
+        )} */}
         {
           !!managUser && (
             <>
