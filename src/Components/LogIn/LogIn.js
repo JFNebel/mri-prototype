@@ -9,6 +9,8 @@ import {
 
 import { login } from '../../Services';
 
+import MainContext from '../../context'
+
 import { useSnackbar } from 'notistack';
 
 function LogIn(props) {
@@ -18,6 +20,9 @@ function LogIn(props) {
     formState: { errors },
   } = useForm();
 
+  const mainContext = React.useContext(MainContext);
+  const { setUser } = mainContext;
+
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -25,10 +30,11 @@ function LogIn(props) {
   const onSubmit = (data) => {
     return login(data)
       .then((user) => {
-        navigate(user.admin ? '/admin' : '/segmenter');
+        setUser(user);
+        return navigate(user.admin ? '/admin' : '/segmenter');
       })
       .catch((_) => {
-        enqueueSnackbar('Credenciales no válidas', { variant: 'error' });
+        return enqueueSnackbar('Credenciales no válidas', { variant: 'error' });
       });
   };
 

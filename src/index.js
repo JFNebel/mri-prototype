@@ -1,27 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-//import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { SnackbarProvider } from 'notistack';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import LogIn from './Components/LogIn/LogIn';
-import DropZone from './Components/DropZone/DropZone'
-
-import './firebase';
+import './index.css';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <SnackbarProvider>
-      <Routes>
-        <Route path="/" element={<LogIn />} />
-        <Route path="admin" element={<p>Admin</p>} />
-        <Route path="segmenter" element={<DropZone />} />
-    </Routes>
-    </SnackbarProvider>
-  </BrowserRouter>
+  <App />
 );
 
 // If you want to start measuring performance in your app, pass a function
