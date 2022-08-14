@@ -9,7 +9,8 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { login } from '../../services';
-
+import { isAdmin } from '../../services';
+import { getAuth } from "firebase/auth";
 import MainContext from '../../context'
 
 import { useSnackbar } from 'notistack';
@@ -22,12 +23,28 @@ function LogIn(props) {
   } = useForm();
 
   const mainContext = React.useContext(MainContext);
-  const { setUser } = mainContext;
+  const { setUser, user } = mainContext;
   const [loading, setLoadingState] = React.useState(false);
 
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
+
+  React.useEffect(() => {
+    const { currentUser } = getAuth();
+    const localUser = JSON.parse(localStorage.getItem('user'));
+    
+    if (!currentUser || localUser?.email !== currentUser?.email) {
+      localStorage.removeItem('user');
+      return navigate('/');
+    }
+    isAdmin({ email: currentUser.email })
+      .then(adminUser => {
+        navigate(adminUser ? '/admin' : '/segmenter');
+      })
+      .catch(() => console.error('Error checking admin'));
+    return;
+  }, [user, navigate, setUser]);
 
   const onSubmit = (data) => {
     setLoadingState(true);
@@ -35,6 +52,7 @@ function LogIn(props) {
       .then((user) => {
         setLoadingState(false);
         setUser(user);
+        console.log('Login: ', user.admin);
         return navigate(user.admin ? '/admin' : '/segmenter');
       })
       .catch((_) => {

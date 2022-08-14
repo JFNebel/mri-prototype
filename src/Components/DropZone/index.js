@@ -121,7 +121,7 @@ function DropZone() {
         </div>
       </div>
       {files.length > 0 && <PreviewCard setFiles={setFiles} files={files} />}
-      {!downloadFile && (
+      {files.length === 2 && !downloadFile && (
         <div className="segment-button">
           <LoadingButton
             loading={loading}
@@ -132,7 +132,7 @@ function DropZone() {
           </LoadingButton>
         </div>
       )}
-      {downloadFile && <ResultsCard downloadFile={downloadFile} />}
+      {downloadFile && <ResultsCard downloadFile={downloadFile} setFiles={setFiles} setDownloadFile={setDownloadFile} />}
     </Container>
   );
 }

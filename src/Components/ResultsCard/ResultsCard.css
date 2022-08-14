@@ -16,6 +16,12 @@
 
 .button-container {
   display: flex;
+  flex-wrap: wrap;
+  flex-basis: auto;
   justify-content: space-evenly;
   width: 100%;
+}
+
+.button-container button {
+  margin: 6px 0;
 }

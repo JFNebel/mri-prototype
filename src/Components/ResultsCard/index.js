@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import FeedbackModal from '../FeedbackModal';
 
 
-function ResultsCard({ downloadFile }) {
+function ResultsCard({ downloadFile, setFiles, setDownloadFile }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,6 +27,10 @@ function ResultsCard({ downloadFile }) {
           Descargar resultados
         </Button>
         <Button onClick={handleOpen} color='info' variant='outlined'>Dejar comentario</Button>
+        <Button onClick={() => {
+          setFiles([]);
+          setDownloadFile();
+        }} color='info' variant='outlined'>Nueva segmentación</Button>
       </div>
         <Dialog open={open} onClose={handleClose}>
         <FeedbackModal handleClose={handleClose} downloadFile={downloadFile} />

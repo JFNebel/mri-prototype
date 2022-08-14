@@ -14,8 +14,13 @@ import './firebase';
 
 const App = () => {
 
-  const [user, setUser] = React.useState({});
+  const [user, setUserState] = React.useState(localStorage.getItem('user') || {});
   const [managUser, setManagUser] = React.useState(false);
+
+  const setUser = (user) => {
+    setUserState(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
   const valueContext = {
     user,
@@ -27,13 +32,13 @@ const App = () => {
   return (
     <MainContext.Provider value={valueContext}>
       <BrowserRouter>
-      <SnackbarProvider>
-        <Routes>
-          <Route path="/" element={<LogIn />} />
-          <Route path="admin" element={<Drawer><Admin/></Drawer>} />
-          <Route path="segmenter" element={<Drawer><DropZone /></Drawer>} />
-      </Routes>
-      </SnackbarProvider>
+        <SnackbarProvider>
+          <Routes>
+            <Route path="/" element={<LogIn />} />
+            <Route path="admin" element={<Drawer><Admin/></Drawer>} />
+            <Route path="segmenter" element={<Drawer><DropZone /></Drawer>} />
+        </Routes>
+        </SnackbarProvider>
     </BrowserRouter>
   </MainContext.Provider>
   )

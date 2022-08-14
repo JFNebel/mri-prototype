@@ -28,6 +28,16 @@ export async function login({ email, password }) {
   }
 }
 
+export async function isAdmin({ email }) {
+  console.log('Email', email);
+  const docRef = doc(db, "admins", email);
+  const docSnap = await getDoc(docRef);
+  const result = docSnap.exists();
+  console.log('Is admin', result);
+  return result;
+}
+
+
 export async function getTableData({ type = 'feedback' }) {
   if (type === 'feedback') {
     const collectionRef = collection(db, 'feedbacks');

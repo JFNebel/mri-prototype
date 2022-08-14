@@ -17,8 +17,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import { Logout, ManageAccounts, Feedback } from '@mui/icons-material';
 
+import { Logout, Feedback } from '@mui/icons-material';
 import MainContext from '../../context';
 import {
   useNavigate,
@@ -77,12 +77,6 @@ export default function PersistentDrawerLeft({ children }) {
   const { user, setUser, managUser, setManagUser } = mainContext;
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!user?.email) {
-      navigate('/');
-    }
-  }, [user, navigate]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
