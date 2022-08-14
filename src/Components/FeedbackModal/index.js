@@ -90,7 +90,6 @@ function FeedbackModal({ handleClose, downloadFile }) {
     setLoadingFeed(true);
     data.rating = rating;
     data = { ...data, ...downloadFile, user: user.email };
-    console.log(data);
     return uploadPrediction(data)
       .then(() => {
         enqueueSnackbar('Gracias por tu feedback', { variant: 'success' });
@@ -99,7 +98,7 @@ function FeedbackModal({ handleClose, downloadFile }) {
       })
       .catch((error) => {
         setLoadingFeed(false);
-        console.log(error);
+        console.error(error);
       });
   };
 

@@ -39,16 +39,15 @@ const rejectStyle = {
 
 function DropZone() {
   const [files, setFiles] = useState([]);
-  const [segment, setSegment] = useState();
   const [downloadFile, setDownloadFile] = useState();
-  const [previewView, setPreviewView] = useState();
   const [loading, setLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar()
 
   React.useEffect(() => {
-    setSegment(files.length === 2);
-    setPreviewView(!!files.length);
+    if (files.length < 2) {
+      setDownloadFile();
+    }
   }, [files]);
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -97,7 +96,7 @@ function DropZone() {
         })
         .catch(err => {
           setLoading(false);
-          console.log(err);
+          console.error(err);
         });
     }
     setLoading(false);
@@ -121,8 +120,8 @@ function DropZone() {
           )}
         </div>
       </div>
-      {previewView && <PreviewCard setFiles={setFiles} files={files} />}
-      {segment && !downloadFile && !downloadFile && (
+      {files.length > 0 && <PreviewCard setFiles={setFiles} files={files} />}
+      {!downloadFile && (
         <div className="segment-button">
           <LoadingButton
             loading={loading}

@@ -23,7 +23,7 @@ export async function login({ email, password }) {
     user.admin = docSnap.exists();
     return user;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
@@ -84,14 +84,14 @@ export async function uploadPrediction(params) {
     await addDoc(collection(db, 'feedbacks'), data);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
 
 
 export async function sendFile({ mriT1, mriT2 }) {
-  console.log('URL_SERVER', URL_SERVER);
+  console.info('URL_SERVER', URL_SERVER);
   const url = new URL(URL_SERVER);
   url.pathname = '/api/v1/segmenter/predict';
 
@@ -99,7 +99,7 @@ export async function sendFile({ mriT1, mriT2 }) {
   formData.append('t1', mriT1);
   formData.append('t2', mriT2);
 
-  console.log('Sending file to', url);
+  console.info('Sending file to', url);
 
   try {
     const response = await fetch(url, {
@@ -117,6 +117,6 @@ export async function sendFile({ mriT1, mriT2 }) {
       blob,
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

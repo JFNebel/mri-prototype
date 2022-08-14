@@ -4,10 +4,6 @@ import React from 'react';
 import { Delete } from '@mui/icons-material';
 
 function PreviewCard(props) {
-  React.useEffect(() => {
-    console.log('PreviewCard: useEffect');
-    console.log(props.files);
-  }, [props.files]);
 
   return (
     <div className="img-preview">
@@ -15,8 +11,8 @@ function PreviewCard(props) {
         {props.files.map((file, idx) => (
           <div key={file.name} className="item-drop">
             <div>
-              {file.name.length > 15
-                ? file.name.substring(0, 15) + '...'
+              {file.name.length > 30
+                ? file.name.substring(0, 30) + '...'
                 : file.name}{' '}
               ({(file.size / 1024 / 1024).toFixed(2)} MB)
             </div>
@@ -44,11 +40,9 @@ function PreviewCard(props) {
               <div
                 style={{ display: 'flex', alignItems: 'center' }}
                 onClick={() => {
-                  console.log(props.files);
                   props.setFiles((files) =>
                     files.filter((f) => f.name !== file.name)
                   );
-                  console.log(props.files);
                 }}
               >
                 <Delete style={{ color: '#707070' }} />

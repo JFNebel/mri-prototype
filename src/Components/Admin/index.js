@@ -51,23 +51,19 @@ const options = {
 
 const Admin = () => {
   const mainContext = React.useContext(MainContext);
-  const { managUser, setManagUser } = mainContext;
+  const { managUser } = mainContext;
 
 
   const [dataTable, setDataTable] = React.useState([]);
 
   React.useEffect(() => {
     if (!dataTable.length) {
-      console.log('Admin: useEffect');
       const type = managUser ? 'users' : 'feedback';
       getTableData({ type })
         .then(docs => {
-          console.log(docs);
           setDataTable(docs);
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch(error => console.error(error));
     }
     return;
   });
