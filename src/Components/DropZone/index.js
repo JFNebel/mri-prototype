@@ -9,6 +9,8 @@ import { useSnackbar } from 'notistack';
 import { sendFile } from '../../services';
 import { LoadingButton } from '@mui/lab';
 
+import JSZip from 'jszip';
+
 const baseStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -77,6 +79,22 @@ function DropZone() {
     [ isFocused, isDragAccept, isDragReject ]
   );
 
+  const blob2Zip = async (blob) => {
+    const zip = new JSZip();
+    const fileZip = await zip.loadAsync(blob);
+    console.log('fileZip', fileZip);
+    console.log('fileZip.files', fileZip.files);
+    const fileKeys = Object.keys(fileZip.files);
+    const fileKey = fileKeys.find((name) => name.includes('numpy'));
+    const fileJSON = fileZip.files[fileKey];
+    console.log('fileJSON', fileJSON);
+    // parse fileJSON to JSON
+    const fileJSONString = await fileJSON.async('string');
+    const fileJSONParsed = JSON.parse(fileJSONString);
+    console.log('fileJSONParsed', fileJSONParsed);
+    return fileJSONParsed;
+  }
+
   const sendFiles = () => {
     setLoading(true);
     const mriT1 = files.find(f => f.mriType === 't1');
@@ -93,6 +111,11 @@ function DropZone() {
         .then(res => {
           setLoading(false);
           setDownloadFile(res);
+          blob2Zip(res.blob).then(result => {
+            console.log('result', result);
+          }).catch(err => {
+            console.log('err', err);
+          });
         })
         .catch(err => {
           setLoading(false);
