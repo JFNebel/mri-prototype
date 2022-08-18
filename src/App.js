@@ -2,7 +2,7 @@ import React from 'react';
 import { SnackbarProvider } from 'notistack';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Admin from './components/Admin'
+import Admin from './components/Administrator'
 import Drawer from './components/Drawer';
 import LogIn from './components/LogIn';
 import DropZone from './components/DropZone';

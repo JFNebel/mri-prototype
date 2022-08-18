@@ -51,6 +51,7 @@ function DropZone() {
   }, [files]);
 
   const onDrop = useCallback((acceptedFiles) => {
+    console.log(acceptedFiles);
     setFiles((files) => [...files, acceptedFiles].flat());
   }, []);
 
@@ -108,10 +109,10 @@ function DropZone() {
         <input {...getInputProps()} />
         <div className="dropzone">
           {isDragActive ? (
-            <p>Arrastra un archivo T1 y T2 aquí</p>
+            <p>Arrastra un archivo T1 y T2 aquí (.nii, .nii.zip o .nii.gz)</p>
           ) : (
             <p>
-              Arrastra archivos T1 y T2
+              Arrastra archivos T1 y T2 (.nii, .nii.zip o .nii.gz)
               <br />
               <br />o<br />
               <br />
