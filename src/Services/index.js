@@ -29,7 +29,6 @@ export async function login({ email, password }) {
 }
 
 export async function isAdmin({ email }) {
-  console.log('Email', email);
   const docRef = doc(db, "admins", email);
   const docSnap = await getDoc(docRef);
   const result = docSnap.exists();

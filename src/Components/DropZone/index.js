@@ -9,6 +9,9 @@ import { useSnackbar } from 'notistack';
 import { sendFile } from '../../services';
 import { LoadingButton } from '@mui/lab';
 
+import ndarray from 'ndarray';
+import JSZip from 'jszip';
+
 const baseStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -41,6 +44,7 @@ function DropZone() {
   const [files, setFiles] = useState([]);
   const [downloadFile, setDownloadFile] = useState();
   const [loading, setLoading] = useState(false);
+  const [dataImage, setDataImage] = useState();
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -78,6 +82,71 @@ function DropZone() {
     [ isFocused, isDragAccept, isDragReject ]
   );
 
+  const nArrayParse = (input, shape) => {
+    const inputArray = ndarray(input.flat(5), shape);
+    console.log('inputArray', inputArray);
+    console.log('get item', inputArray.get(128,22,128));
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = shape[0];
+    canvas.height = shape[1];
+
+    // create imageData object
+    const idata = ctx.createImageData(shape[0], shape[1]);
+
+    // set our buffer as source
+    idata.data.set(inputArray.hi(2, 2).data);
+
+    // update canvas with new data
+    ctx.putImageData(idata, 0, 0);
+
+    const dataUri = canvas.toDataURL();
+    setDataImage(dataUri);
+  }
+
+  const blob2Zip = async (blob) => {
+    const zip = new JSZip();
+    const fileZip = await zip.loadAsync(blob);
+    console.log('fileZip', fileZip);
+    console.log('fileZip.files', fileZip.files);
+
+    const fileKeys = Object.keys(fileZip.files);
+    const fileKey = fileKeys.find((name) => name.includes('numpy'));
+    const fileJSON = fileZip.files[fileKey];
+    console.log('fileJSON', fileJSON);
+
+    const fileJSONString = await fileJSON.async('string');
+    const fileJSONParsed = JSON.parse(fileJSONString);
+    console.log('fileJSONParsed', fileJSONParsed);
+
+    const { input, label } = fileJSONParsed;
+    const shape = [256, 44, 256];
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = shape[0];
+    canvas.height = shape[1];
+
+    // create imageData object
+    const idata = ctx.createImageData(shape[0], shape[1]);
+
+    // set our buffer as source
+    const imageArray = input[0];
+    console.log('imageArray', imageArray);
+    idata.data.set(imageArray);
+
+    // update canvas with new data
+    ctx.putImageData(idata, 0, 0);
+
+    const dataUri = canvas.toDataURL();
+    setDataImage(dataUri);
+
+    return fileJSONParsed;
+  }
+
   const sendFiles = () => {
     setLoading(true);
     const mriT1 = files.find(f => f.mriType === 't1');
@@ -94,6 +163,11 @@ function DropZone() {
         .then(res => {
           setLoading(false);
           setDownloadFile(res);
+          blob2Zip(res.blob).then(result => {
+            console.log('result', result);
+          }).catch(err => {
+            console.log('err', err);
+          });
         })
         .catch(err => {
           setLoading(false);
@@ -134,6 +208,7 @@ function DropZone() {
         </div>
       )}
       {downloadFile && <ResultsCard downloadFile={downloadFile} setFiles={setFiles} setDownloadFile={setDownloadFile} />}
+      {dataImage && <img src={dataImage} alt="MRI" />}
     </Container>
   );
 }
