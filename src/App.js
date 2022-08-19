@@ -9,6 +9,7 @@ import DropZone from './components/DropZone';
 
 import MainContext from './context';
 
+
 import './firebase';
 
 const App = () => {
