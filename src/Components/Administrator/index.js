@@ -37,6 +37,13 @@ const columns = [
       sort: true,
     },
   },
+  {
+    name: 'Fecha',
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
 ];
 
 //const data = [[5, 'Feo el proto', 'url del archivo', 'Eduardo']];

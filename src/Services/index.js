@@ -1,11 +1,8 @@
-import {
-  getAuth,
-  signInWithEmailAndPassword
-} from "firebase/auth";
-
-import app from '../firebase';
+import moment from 'moment';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, getDoc, getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
+import app from '../firebase';
 
 const db = getFirestore(app);
 const storage = getStorage();
@@ -43,8 +40,10 @@ export async function getTableData({ type = 'feedback' }) {
     const collectionRef = collection(db, 'feedbacks');
     const docs = await getDocs(collectionRef);
     return docs.docs.map(doc => {
-      const { comment, rating, url, filename, user } = doc.data();
-      return [ rating, comment, <a href={url}>{filename}</a>, user || 'Anónimo' ];
+      const { comment, rating, url, filename, user, date, tz } = doc.data();
+      console.log(date, tz)
+      const dateParsed = date && tz ? moment(date).utcOffset(tz).format('DD/MM/YYYY HH:MM') : '--/--/---- --:--'
+      return [ rating, comment, <a href={url}>{filename}</a>, user || 'Anónimo', dateParsed ];
     });
   } else if (type === 'users') {
     /* const auth = getAuth();
@@ -75,7 +74,9 @@ export async function uploadPrediction(params) {
 
   const [name, ...ext] = filename.split('.');
 
-  filename = `${name}_${new Date().getTime()}.${ext.join('.')}`;
+  const date = moment();
+
+  filename = `${name}_${date.toDate().getTime()}.${ext.join('.')}`;
 
   const refPath = `segmentations/${filename}`;
   const fileRef = ref(storage, refPath);
@@ -89,7 +90,15 @@ export async function uploadPrediction(params) {
 
     const downloadRef = ref(storage, refPath);
     const url = await getDownloadURL(downloadRef);
-    const data = { filename, comment, rating, url, user };
+    const data = {
+      filename,
+      comment,
+      rating,
+      url,
+      user,
+      date: date.toDate().getTime(),
+      tz: date.format('Z')
+    };
 
     await addDoc(collection(db, 'feedbacks'), data);
     return true;
