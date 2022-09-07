@@ -39,6 +39,7 @@ const rejectStyle = {
 
 function DropZone() {
   const [files, setFiles] = useState([]);
+  const [typeFiles, setTypeFiles] = useState(['nada', 'nada']);
   const [downloadFile, setDownloadFile] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -51,8 +52,16 @@ function DropZone() {
   }, [files]);
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
-    setFiles((files) => [...files, acceptedFiles].flat());
+    let newFiles = [...files, acceptedFiles].flat();
+    newFiles = newFiles.map((file) => {
+      if (file.name.toLowerCase().includes('t1')) {
+        file.mriType = 't1';
+      } else if (file.name.toLowerCase().includes('t2')) {
+        file.mriType = 't2';
+      }
+      return file;
+    });
+    setFiles(newFiles);
   }, []);
 
   const {
@@ -121,7 +130,7 @@ function DropZone() {
           )}
         </div>
       </div>
-      {files.length > 0 && <PreviewCard setFiles={setFiles} files={files} />}
+      {files.length > 0 && <PreviewCard setFiles={setFiles} files={files} setTypeFiles={setTypeFiles} typeFiles={typeFiles} />}
       {files.length === 2 && !downloadFile && (
         <div className="segment-button">
           <LoadingButton

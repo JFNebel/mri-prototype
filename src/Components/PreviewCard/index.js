@@ -19,6 +19,7 @@ function PreviewCard(props) {
             <div className='action-buttons'>
               <div style={{ marginRight: '12px' }}>
                 <select
+                  defaultValue={file.mriType}
                   id={`mriSelect-${idx}`}
                   onChange={(e) => {
                     const selectBox = document.getElementById(
@@ -32,7 +33,7 @@ function PreviewCard(props) {
                     });
                   }}
                 >
-                  <option value="" defaultValue></option>
+                  <option value=""></option>
                   <option value="t1">T1</option>
                   <option value="t2">T2</option>
                 </select>
