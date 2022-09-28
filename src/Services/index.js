@@ -1,7 +1,16 @@
 import moment from 'moment';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, getDoc, getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  addDoc,
+  collection,
+  getDocs,
+} from 'firebase/firestore';
+import NIFTI from 'nifti-reader-js';
+
 import app from '../firebase';
 
 const db = getFirestore(app);
@@ -14,7 +23,7 @@ export async function login({ email, password }) {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
 
-    const docRef = doc(db, "admins", user.email);
+    const docRef = doc(db, 'admins', user.email);
     const docSnap = await getDoc(docRef);
 
     user.admin = docSnap.exists();
@@ -27,23 +36,31 @@ export async function login({ email, password }) {
 
 export async function isAdmin({ email }) {
   console.log('Email', email);
-  const docRef = doc(db, "admins", email);
+  const docRef = doc(db, 'admins', email);
   const docSnap = await getDoc(docRef);
   const result = docSnap.exists();
   console.log('Is admin', result);
   return result;
 }
 
-
 export async function getTableData({ type = 'feedback' }) {
   if (type === 'feedback') {
     const collectionRef = collection(db, 'feedbacks');
     const docs = await getDocs(collectionRef);
-    return docs.docs.map(doc => {
+    return docs.docs.map((doc) => {
       const { comment, rating, url, filename, user, date, tz } = doc.data();
-      console.log(date, tz)
-      const dateParsed = date && tz ? moment(date).utcOffset(tz).format('DD/MM/YYYY HH:MM') : '--/--/---- --:--'
-      return [ rating, comment, <a href={url}>{filename}</a>, user || 'Anónimo', dateParsed ];
+      console.log(date, tz);
+      const dateParsed =
+        date && tz
+          ? moment(date).utcOffset(tz).format('DD/MM/YYYY HH:MM')
+          : '--/--/---- --:--';
+      return [
+        rating,
+        comment,
+        <a href={url}>{filename}</a>,
+        user || 'Anónimo',
+        dateParsed,
+      ];
     });
   } else if (type === 'users') {
     /* const auth = getAuth();
@@ -68,7 +85,6 @@ export async function getTableData({ type = 'feedback' }) {
   }
 }
 
-
 export async function uploadPrediction(params) {
   let { filename, blob, comment, rating, user } = params;
 
@@ -82,7 +98,7 @@ export async function uploadPrediction(params) {
   const fileRef = ref(storage, refPath);
 
   const metadata = {
-    'Content-Type': 'application/x-zip-compressed'
+    'Content-Type': 'application/x-zip-compressed',
   };
 
   try {
@@ -97,9 +113,9 @@ export async function uploadPrediction(params) {
       url,
       user,
       date: date.toDate().getTime(),
-      tz: date.format('Z')
+      tz: date.format('Z'),
     };
-
+    console.log('Data', data);
     await addDoc(collection(db, 'feedbacks'), data);
     return true;
   } catch (error) {
@@ -107,7 +123,6 @@ export async function uploadPrediction(params) {
     throw error;
   }
 }
-
 
 export async function sendFile({ mriT1, mriT2 }) {
   console.info('URL_SERVER', URL_SERVER);
@@ -126,15 +141,34 @@ export async function sendFile({ mriT1, mriT2 }) {
       body: formData,
       headers: {
         'access-control-expose-headers': '*',
-      }
+      },
     });
     const filename = response.headers.get('filename');
     const blob = await response.blob();
+    let mriMock = await blob.arrayBuffer();
+
+    if (NIFTI.isCompressed(mriMock)) {
+      mriMock = NIFTI.decompress(mriMock);
+    }
+
+    if (NIFTI.isNIFTI(mriMock)) {
+      const header = NIFTI.readHeader(mriMock);
+      console.log('Header', header.toFormattedString());
+      const image = NIFTI.readImage(header, mriMock);
+      console.log('Image', image);
+      return {
+        blob,
+        image,
+        header,
+        filename
+      };
+    }
+    console.log('Not NIFTI');
 
     return {
-      filename,
       blob,
-    }
+      filename
+    };
   } catch (error) {
     console.error(error);
   }

@@ -17,9 +17,10 @@ function ResultsCard({ downloadFile, setFiles, setDownloadFile }) {
           color='success'
           variant='outlined'
           onClick={() => {
-            const { blob, filename } = downloadFile;
+            //encodeURI
+            const { filename, href } = downloadFile;
             const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
+            link.href = href;
             link.download = filename;
             link.click();
           }}

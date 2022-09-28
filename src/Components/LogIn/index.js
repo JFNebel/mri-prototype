@@ -52,7 +52,7 @@ function LogIn(props) {
       .then((user) => {
         setLoadingState(false);
         setUser(user);
-        console.log('Login: ', user.admin);
+        console.log('IS ADMIN: ', user.admin);
         return navigate(user.admin ? '/admin' : '/segmenter');
       })
       .catch((_) => {

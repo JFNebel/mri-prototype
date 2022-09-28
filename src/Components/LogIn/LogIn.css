@@ -1,6 +1,5 @@
 .log-in-card{
   width: 25vw;
-  height: 45vh;
   padding: 20px;
   border-radius: 5px;
 }
@@ -15,6 +14,6 @@
 }
 
 .submit-btn{
-  margin-top: 70px!important;
+  margin-top: 50px!important;
 }
 

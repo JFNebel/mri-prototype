@@ -43,7 +43,7 @@ function DropZone() {
   const [downloadFile, setDownloadFile] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     if (files.length < 2) {
@@ -51,7 +51,23 @@ function DropZone() {
     }
   }, [files]);
 
+  React.useEffect(() => {
+    if (downloadFile) {
+      window.papaya.Container.startPapaya();
+      /* console.log('Papaya started', downloadFile);
+      const link = document.createElement('a');
+      link.href = downloadFile.href;
+      link.download = downloadFile.filename;
+      link.click();
+      setTimeout(() => {
+        console.log('Opening papaya');
+        window.papaya.Container.addImage(0, '/Users/jolyne/Documents/test.nii.gz');
+      }, 5000); */
+    }
+  }, [downloadFile]);
+
   const onDrop = useCallback((acceptedFiles) => {
+    console.log('Accepted files', acceptedFiles);
     let newFiles = [...files, acceptedFiles].flat();
     newFiles = newFiles.map((file) => {
       if (file.name.toLowerCase().includes('t1')) {
@@ -62,6 +78,7 @@ function DropZone() {
       return file;
     });
     setFiles(newFiles);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {
@@ -84,33 +101,34 @@ function DropZone() {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [ isFocused, isDragAccept, isDragReject ]
+    [isFocused, isDragAccept, isDragReject]
   );
 
   const sendFiles = () => {
     setLoading(true);
-    const mriT1 = files.find(f => f.mriType === 't1');
-    const mriT2 = files.find(f => f.mriType === 't2');
+    const mriT1 = files.find((f) => f.mriType === 't1');
+    const mriT2 = files.find((f) => f.mriType === 't2');
 
     if (!mriT1) {
-      enqueueSnackbar('Debe seleccionar una MRI T1', { variant: 'error' })
+      enqueueSnackbar('Debe seleccionar una MRI T1', { variant: 'error' });
     }
     if (!mriT2) {
-      enqueueSnackbar('Debe seleccionar una MRI T2', { variant: 'error' })
+      enqueueSnackbar('Debe seleccionar una MRI T2', { variant: 'error' });
     }
     if (mriT1 && mriT2) {
       return sendFile({ mriT1, mriT2 })
-        .then(res => {
+        .then((res) => {
           setLoading(false);
+          res.href = window.URL.createObjectURL(res.blob);
           setDownloadFile(res);
         })
-        .catch(err => {
+        .catch((err) => {
           setLoading(false);
           console.error(err);
         });
     }
     setLoading(false);
-  }
+  };
 
   return (
     <Container className="main-dropzone">
@@ -130,7 +148,14 @@ function DropZone() {
           )}
         </div>
       </div>
-      {files.length > 0 && <PreviewCard setFiles={setFiles} files={files} setTypeFiles={setTypeFiles} typeFiles={typeFiles} />}
+      {files.length > 0 && (
+        <PreviewCard
+          setFiles={setFiles}
+          files={files}
+          setTypeFiles={setTypeFiles}
+          typeFiles={typeFiles}
+        />
+      )}
       {files.length === 2 && !downloadFile && (
         <div className="segment-button">
           <LoadingButton
@@ -142,7 +167,18 @@ function DropZone() {
           </LoadingButton>
         </div>
       )}
-      {downloadFile && <ResultsCard downloadFile={downloadFile} setFiles={setFiles} setDownloadFile={setDownloadFile} />}
+      {downloadFile && (
+        <>
+          <ResultsCard
+            downloadFile={downloadFile}
+            setFiles={setFiles}
+            setDownloadFile={setDownloadFile}
+          />
+          <div
+            className="papaya"
+          />
+        </>
+      )}
     </Container>
   );
 }
